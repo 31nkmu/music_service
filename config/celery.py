@@ -14,9 +14,9 @@ app = Celery('config')
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
-# app.conf.beat_schedule = {
-#     'run-every-single-minute': {
-#         'task': 'testapp.tasks.hello_world',
-#         'schedule': crontab(),
-#     },
-# }
+app.conf.beat_schedule = {
+    'send_spam': {
+        'task': 'applications.account.tasks.send_spam',
+        'schedule': crontab(day_of_week='*/7'),
+    },
+}

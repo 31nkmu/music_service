@@ -25,6 +25,8 @@ class RegisterSerializer(serializers.ModelSerializer):
     def validate_card_number(card_number):
         if not card_number.startswith('4169'):
             raise serializers.ValidationError("Карта виза должна начинаться на '4169'")
+        if len(card_number) != 16:
+            raise serializers.ValidationError("Количество цифр в карте должно быть 16")
         return card_number
 
     @staticmethod
@@ -96,5 +98,30 @@ class ForgotPasswordConfirmSerializer(serializers.Serializer):
         user = User.objects.get(email=validated_data['email'])
         user.set_password(validated_data['password'])
         user.activation_code = ''
+        user.save()
+        return user
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True, min_length=6, write_only=True)
+    new_password = serializers.CharField(required=True, min_length=6, write_only=True)
+    new_password_repeat = serializers.CharField(required=True, min_length=6, write_only=True)
+
+    def validate_old_password(self, old_password):
+        user = self.context.get('request').user
+        if not user.check_password(old_password):
+            raise serializers.ValidationError('Старый пароль введен неверно')
+        return old_password
+
+    def validate(self, attrs):
+        p1 = attrs['new_password']
+        p2 = attrs['new_password_repeat']
+        if p1 != p2:
+            raise serializers.ValidationError('Пароли не совпадают')
+        return attrs
+
+    def create(self, validated_data):
+        user = self.context.get('request').user
+        user.set_password(validated_data['new_password'])
         user.save()
         return user

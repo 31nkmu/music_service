@@ -2,10 +2,11 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from applications.account.serializers import RegisterSerializer, ForgotPasswordSerializer, \
-    ForgotPasswordConfirmSerializer
+    ForgotPasswordConfirmSerializer, ChangePasswordSerializer
 
 User = get_user_model()
 
@@ -35,3 +36,9 @@ class ForgotPasswordApiView(CreateAPIView):
 class ForgotPasswordConfirmApiView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = ForgotPasswordConfirmSerializer
+
+
+class ChangePasswordApiView(CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = ChangePasswordSerializer
+    permission_classes = (IsAuthenticated,)

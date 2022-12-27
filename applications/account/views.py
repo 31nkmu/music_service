@@ -4,7 +4,8 @@ from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.response import Response
 
-from applications.account.serializers import RegisterSerializer
+from applications.account.serializers import RegisterSerializer, ForgotPasswordSerializer, \
+    ForgotPasswordConfirmSerializer
 
 User = get_user_model()
 
@@ -24,3 +25,13 @@ class ActivationApiView(ListAPIView):
             return Response({'msg': 'ваш аккаунт успешно активирован'}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response({'msg': 'неправильный код активации'})
+
+
+class ForgotPasswordApiView(CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = ForgotPasswordSerializer
+
+
+class ForgotPasswordConfirmApiView(CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = ForgotPasswordConfirmSerializer

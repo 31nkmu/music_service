@@ -12,3 +12,13 @@ def send_user_activation_link(email, activation_code):
         config('EMAIL_HOST_USER'),
         [email]
     )
+
+
+@app.task
+def send_user_forgot_password_code(email, activation_code):
+    send_mail(
+        'from music_service "Yonko"',
+        f'Your link to change password {activation_code}',
+        config('EMAIL_HOST_USER'),
+        [email]
+    )

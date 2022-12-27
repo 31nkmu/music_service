@@ -16,6 +16,8 @@ urlpatterns = [
 
     path('register/', views.RegisterApiView.as_view()),
     path('activate/<uuid:activation_code>/', views.ActivationApiView.as_view()),
+    path('forgot_password/', views.ForgotPasswordApiView.as_view()),
+    path('forgot_password_confirm/', views.ForgotPasswordConfirmApiView.as_view()),
 ]
 
 # urlpatterns += router.urls

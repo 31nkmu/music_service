@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'drf_yasg',
 
     # app
+    'applications.account',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +155,5 @@ SWAGGER_SETTINGS = {
         }
     }
 }
+
+AUTH_USER_MODEL = 'account.CustomUser'

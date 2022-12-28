@@ -24,8 +24,8 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
-        extra_fields.setdefault("card_number", '0000000000000000')
-        extra_fields.setdefault("card_balance", 0)
+        extra_fields.setdefault("card_number", '4169000000000000')
+        extra_fields.setdefault("card_balance", 5000)
         extra_fields.setdefault("gender", 'm')
         extra_fields.setdefault("is_subscribed", False)
 

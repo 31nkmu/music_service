@@ -8,3 +8,6 @@ celery[redis]
 dj_config_url
 psycopg2-binary
 pillow
+selenium
+webdriver_manager
+fake-useragent

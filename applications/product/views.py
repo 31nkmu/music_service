@@ -6,9 +6,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
-from applications.product.models import Music
+from applications.product.models import Music, Album
 from applications.product.permissions import IsOwner
-from applications.product.serializers import MusicSerializer
+from applications.product.serializers import MusicSerializer, AlbumSerializer
 
 User = get_user_model()
 
@@ -41,3 +41,12 @@ class MusicPostConfirmAPIView(APIView):
         user.save()
         music.save()
         return Response({'msg': 'ваша песня в активном пользование'}, status=status.HTTP_200_OK)
+
+
+class AlbumViewSet(ModelViewSet):
+    queryset = Album.objects.all()
+    serializer_class = AlbumSerializer
+    permission_classes = [IsOwner]
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)

@@ -1,6 +1,21 @@
 from rest_framework import serializers
 from applications.product.tasks import send_paid_confirm
-from applications.product.models import Music
+from applications.product.models import Music, Album
+
+
+class AlbumSerializer(serializers.ModelSerializer):
+    owner = serializers.CharField(required=False)
+
+    class Meta:
+        model = Album
+        fields = '__all__'
+
+    @staticmethod
+    def validate_title(title):
+        print(dir(Album.objects.filter(title=title.lower)))
+        if Album.objects.filter(title=title.lower).exists():
+            raise serializers.ValidationError({'msg': 'такой альбом уже существует'})
+        return title
 
 
 class MusicSerializer(serializers.ModelSerializer):

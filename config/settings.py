@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     # app
     'applications.account',
     'applications.product',
+    'applications.feedback',
 ]
 
 MIDDLEWARE = [
@@ -162,3 +163,10 @@ SWAGGER_SETTINGS = {
 }
 
 AUTH_USER_MODEL = 'account.CustomUser'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': BASE_DIR / 'cache/',
+    }
+}

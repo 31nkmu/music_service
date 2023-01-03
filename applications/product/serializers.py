@@ -38,3 +38,9 @@ class MusicSerializer(serializers.ModelSerializer):
         model = Music
         fields = '__all__'
 
+
+class HistorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Music
+        fields = '__all__'

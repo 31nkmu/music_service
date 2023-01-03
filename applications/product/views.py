@@ -1,6 +1,9 @@
 from django.contrib.auth import get_user_model
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins, status
-from rest_framework.generics import CreateAPIView, get_object_or_404
+from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.generics import get_object_or_404, ListAPIView
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -8,15 +11,26 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from applications.product.models import Music, Album
 from applications.product.permissions import IsOwner
-from applications.product.serializers import MusicSerializer, AlbumSerializer
+from applications.product.serializers import MusicSerializer, AlbumSerializer, HistorySerializer
 
 User = get_user_model()
+
+
+class LargeResultsSetPagination(PageNumberPagination):
+    page_size = 3
+    page_size_query_param = 'page_size'
+    max_page_size = 10000
 
 
 class MusicViewSet(ModelViewSet):
     queryset = Music.objects.all()
     serializer_class = MusicSerializer
     permission_classes = [IsOwner]
+    pagination_class = LargeResultsSetPagination
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['singer', 'album']
+    search_fields = ['title', 'singer', 'album']
+    ordering_fields = ['data_added']
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -50,3 +64,12 @@ class AlbumViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
+class HistoryAPIView(ListAPIView):
+    queryset = Music.objects.all()
+    serializer_class = HistorySerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Music.objects.filter(owner=self.request.user)

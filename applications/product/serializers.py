@@ -1,3 +1,4 @@
+from django.db.models import Avg
 from rest_framework import serializers
 from applications.product.tasks import send_paid_confirm
 from applications.product.models import Music, Album
@@ -33,6 +34,12 @@ class MusicSerializer(serializers.ModelSerializer):
         if not album_singer == music_singer:
             raise serializers.ValidationError({'msg': 'исполнитель альбома и песни не совпадают'})
         return attrs
+
+    def to_representation(self, instance):
+        res = super().to_representation(instance)
+        res['likes'] = instance.likes.filter(like=True).count()
+        res['ratings'] = instance.ratings.all().aggregate(Avg('rating'))['rating__avg']
+        return res
 
     class Meta:
         model = Music

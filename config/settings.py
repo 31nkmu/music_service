@@ -170,8 +170,3 @@ CACHES = {
         'LOCATION': BASE_DIR / 'cache/',
     }
 }
-print(''
-      '\n\n\n\n\n')
-print(123123)
-print(''
-      '\n\n\n\n\n')

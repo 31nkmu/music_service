@@ -33,3 +33,13 @@ def token(client, activate):
     response = client.post('/api/v1/account/login/', dict(email='karimovbillal20002@gmail.com', password='123456'))
     # return {'Authorization': f"Bearer {response.data['access']}"}
     return str(response.data['access'])
+
+
+@pytest.fixture
+def album(client, token):
+    album = dict(title='Newalbum', singer='Jony', owner=token)
+    headers = {
+        'HTTP_AUTHORIZATION': 'Bearer ' + token,
+    }
+    response = client.post(path='/api/v1/product/album/', data=album, **headers)
+    return response.data

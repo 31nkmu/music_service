@@ -5,6 +5,12 @@ from rest_framework.test import APIClient
 User = get_user_model()
 
 
+def get_user():
+    return User.objects.get(
+        email='karimovbillal20002@gmail.com',
+    )
+
+
 @pytest.fixture
 def user():
     user = User.objects.create_user(
@@ -15,6 +21,8 @@ def user():
         gender='m',
         is_subscribed=True
     )
+    user.is_active = True
+    user.save()
     return user
 
 
@@ -25,13 +33,14 @@ def client():
 
 @pytest.fixture
 def activate(user, client):
-    return client.get(f"/api/v1/account/activate/{user.activation_code}/")
+    user = get_user()
+    response = client.get(f"/api/v1/account/activate/{user.activation_code}/")
+    return response
 
 
 @pytest.fixture
 def token(client, activate):
     response = client.post('/api/v1/account/login/', dict(email='karimovbillal20002@gmail.com', password='123456'))
-    # return {'Authorization': f"Bearer {response.data['access']}"}
     return str(response.data['access'])
 
 

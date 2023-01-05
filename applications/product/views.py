@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins, status
@@ -14,6 +16,7 @@ from applications.product.permissions import IsOwner
 from applications.product.serializers import MusicSerializer, AlbumSerializer, HistorySerializer
 
 User = get_user_model()
+logger = logging.getLogger('django_logger')
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -23,6 +26,7 @@ class LargeResultsSetPagination(PageNumberPagination):
 
 
 class MusicViewSet(ModelViewSet):
+    logger.info('music_CRUD')
     queryset = Music.objects.all()
     serializer_class = MusicSerializer
     permission_classes = [IsOwner]
@@ -40,6 +44,7 @@ class MusicViewSet(ModelViewSet):
 
 
 class MusicPostConfirmAPIView(APIView):
+    logger.info('music_confirm')
     permission_classes = [IsAuthenticated]
 
     @staticmethod
@@ -58,6 +63,7 @@ class MusicPostConfirmAPIView(APIView):
 
 
 class AlbumViewSet(ModelViewSet):
+    logger.info('album')
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
     permission_classes = [IsOwner]
@@ -67,6 +73,7 @@ class AlbumViewSet(ModelViewSet):
 
 
 class HistoryAPIView(ListAPIView):
+    logger.info('history')
     queryset = Music.objects.all()
     serializer_class = HistorySerializer
     permission_classes = [IsAuthenticated]
@@ -76,6 +83,7 @@ class HistoryAPIView(ListAPIView):
 
 
 class BestAPIView(APIView):
+    logger.info('best')
 
     @staticmethod
     def get(request):

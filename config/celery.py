@@ -19,4 +19,8 @@ app.conf.beat_schedule = {
         'task': 'applications.account.tasks.send_spam',
         'schedule': crontab(day_of_week='*/7'),
     },
+    'delete_music': {
+        'task': 'applications.product.tasks.delete_not_paid_music',
+        'schedule': crontab(day_of_week='*/7'),
+    },
 }

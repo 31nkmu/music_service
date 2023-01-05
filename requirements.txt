@@ -13,3 +13,4 @@ webdriver_manager
 fake-useragent
 pytest
 pytest-django
+python-json-logger

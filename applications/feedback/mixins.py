@@ -34,4 +34,5 @@ class FavouriteMixin:
     def post(self, request, pk, *args, **kwargs):
         obj, _ = Favourite.objects.get_or_create(music_id=pk, owner=request.user)
         obj.save()
-        return Response(status=status.HTTP_201_CREATED)
+        status_ = 'Добавлено'
+        return Response({'msg': status_})

@@ -73,3 +73,12 @@ class HistoryAPIView(ListAPIView):
 
     def get_queryset(self):
         return Music.objects.filter(owner=self.request.user)
+
+
+class BestAPIView(APIView):
+
+    @staticmethod
+    def get(request):
+        musics = Music.objects.filter(is_paid=True).order_by('likes')[:5]
+        serializer = MusicSerializer(musics, many=True)
+        return Response(serializer.data)

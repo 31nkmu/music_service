@@ -13,8 +13,8 @@ def test_create_album(client, token):
 
 @pytest.mark.django_db
 def test_create_music(client, album, token):
-    i = open('Screenshot_from_2022-12-21_20-35-26.png', 'rb')
-    m = open('V__x_v_PrInce_-_Мурашки.mp3', 'rb')
+    i = open('tests/music_service/Screenshot_from_2022-12-21_20-35-26.png', 'rb')
+    m = open('tests/music_service/V__x_v_PrInce_-_Мурашки.mp3', 'rb')
     data = dict(title='DanzaKuduro', singer='Jony', album=album['title'],  image=i, music=m, owner=token)
     headers = {
         'HTTP_AUTHORIZATION': 'Bearer ' + token,

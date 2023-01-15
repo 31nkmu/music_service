@@ -36,6 +36,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -199,11 +200,6 @@ LOGGING = {
             'formatter': 'json_formatter',
             'filename': 'django_info.log',
         },
-        'celery_file': {
-            'class': 'logging.FileHandler',
-            'formatter': 'json_formatter',
-            'filename': 'celery_info.log',
-        }
     },
 
     'loggers': {
@@ -212,10 +208,5 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
-        'celery_logger': {
-            'handlers': ['console', 'celery_file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        }
     },
 }

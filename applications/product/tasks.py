@@ -1,17 +1,12 @@
-import logging
-
 from decouple import config
 from django.core.mail import send_mail
 
 from applications.product.models import Music
 from config.celery import app
 
-logger = logging.getLogger('celery_logger')
-
 
 @app.task
 def send_paid_confirm(email):
-    logger.info('send_paid_confirm')
     full_link = f'http://localhost:8000/api/v1/product/post_confirm/{"id вашей музыки"}'
     send_mail(
         'From music service "Yonko"',
@@ -23,7 +18,6 @@ def send_paid_confirm(email):
 
 @app.task
 def delete_not_paid_music():
-    logger.info('delete_not_paid_music')
     musics = Music.objects.delete(is_paid=False)
     musics.delete()
     musics.save()

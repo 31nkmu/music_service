@@ -200,11 +200,6 @@ LOGGING = {
             'formatter': 'json_formatter',
             'filename': 'django_info.log',
         },
-        'celery_file': {
-            'class': 'logging.FileHandler',
-            'formatter': 'json_formatter',
-            'filename': 'celery_info.log',
-        }
     },
 
     'loggers': {
@@ -213,10 +208,5 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
-        'celery_logger': {
-            'handlers': ['console', 'celery_file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        }
     },
 }
